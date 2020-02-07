@@ -7,20 +7,29 @@ class Display extends Component {
 
     constructor(props) {
         super(props)
-        this.sortByDesc = this.sortByDesc.bind(this)
+        this.sortAtoZ = this.sortAtoZ.bind(this)
+        this.sortZtoA = this.sortZtoA.bind(this)
         this.state = {
             restList : []
         }
     }
 
-    sortByDesc(event){
+    sortAtoZ(event){
         const {restList} = this.state
         let newRestList = restList
         restList.sort((a,b) => (a.name > b.name) ? 1 : -1)
         this.setState({
             restList: newRestList
         })
+    }
 
+    sortZtoA(event){
+        const {restList} = this.state
+        let newRestList = restList
+        restList.reverse()
+        this.setState({
+            restList: newRestList
+        })
     }
 
         componentDidMount() {
@@ -36,26 +45,25 @@ class Display extends Component {
 
         return (
             <div>
-                <Button onClick={this.sortByDesc}>Sort</Button>
-                {restList.map((item, i) => {
-                        return <Grid
-                            key={i}
-                            container spacing={2}
-                            style={{padding: 20}}>
-                            <Card style={{width: 350, margin: 20,}} variant="outlined">
-                            <CardHeader title={item.name}
-                                        subheader={item.city}/>
+                <Button variant="outlined" color="primary" size="large" style={{padding: 10, marginLeft: '38%', marginRight: 5, marginBottom: 50, marginTop: 20}} onClick={this.sortAtoZ}>Sort ascending</Button>
+                <Button variant="outlined" color="secondary" size="large" style={{padding: 10, marginLeft: 5,marginBottom: 50, marginTop: 20}} onClick={this.sortZtoA}>Sort descending</Button>
+            <Grid container spacing = {30} flewGrow={3} justifyContent = 'row' >
+                {restList.map((restaurant, i) => {
+                        return <Grid key={i} >
+                            <Card style={{width: 400, height: 360, marginLeft: 50, marginRight: 50, marginBottom: 50, marginTop: 10}} variant="outlined">
+                            <CardHeader title={restaurant.name}
+                                        subheader={restaurant.city}/>
                             <CardContent>
-                                <CardMedia style={{height: 200}} image={item.image}/>
-                                <Typography>{item.tags[0]}</Typography>
-                                <Typography>{item.tags[1]}</Typography>
-                                <Typography>{item.delivery_price}</Typography>
+                                <CardMedia style={{height: 200}} image={restaurant.image}/>
+                                <Typography>{restaurant.tags[0]}</Typography>
+                                <Typography>{restaurant.tags[1]}</Typography>
                             </CardContent>
                         </Card>
                         </Grid>
                     }
                 )
                 }
+            </Grid>
             </div>
         );
     }
